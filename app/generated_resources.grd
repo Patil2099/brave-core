@@ -6851,6 +6851,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAB_SEARCH_RECENTLY_CLOSED_TABS" desc="The label on the tab search list section corresponding to recently closed tabs.">
         Recently Closed Tabs
       </message>
+      <message name="IDS_SETTINGS_TABS_SEARCH_SHOW" desc="The button for searching tabs on the left of tab strip region.">
+        Show Search Tabs Button
+      </message>
 
       <!-- Strings for Window Titles in Menus -->
       <if expr="not use_titlecase">
