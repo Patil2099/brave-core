@@ -6,8 +6,8 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 
 #include "base/guid.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
-#include "base/util/values/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
