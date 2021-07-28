@@ -8,6 +8,7 @@
 
 #include "../../../../chrome/browser/service_sandbox_type.h"
 
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 
 // brave::mojom::ProfileImport
@@ -27,18 +28,9 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
 #include "brave/components/ipfs/service_sandbox_type.h"
 #endif
 
-// bat_ads::mojom::BatAdsService
-namespace bat_ads {
-namespace mojom {
-class BatAdsService;
-}  // namespace mojom
-}  // namespace bat_ads
-
-template <>
-inline sandbox::policy::SandboxType
-content::GetServiceSandboxType<bat_ads::mojom::BatAdsService>() {
-  return sandbox::policy::SandboxType::kUtility;
-}
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "brave/components/brave_ads/browser/service_sandbox_type.h"
+#endif
 
 namespace bat_ledger {
 namespace mojom {
