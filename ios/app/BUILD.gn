@@ -5,6 +5,7 @@
 
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
+import("//ios/public/provider/chrome/browser/build_config.gni")
 
 source_set("app") {
   configs += [
