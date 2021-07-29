@@ -195,8 +195,8 @@ source_set("extensions") {
 
   if (brave_together_enabled) {
     sources += [
-      "api/brave_together_api.cc",
-      "api/brave_together_api.h",
+      "api/brave_talk_api.cc",
+      "api/brave_talk_api.h",
     ]
 
     deps += [
