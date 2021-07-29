@@ -248,7 +248,7 @@ if (enable_sidebar) {
   brave_chrome_browser_deps += [ "//brave/components/sidebar" ]
 }
 
-if (brave_together_enabled) {
+if (brave_talk_enabled) {
   brave_chrome_browser_deps += [ "//brave/components/brave_talk/browser" ]
 }
 

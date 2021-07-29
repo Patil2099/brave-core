@@ -41,7 +41,7 @@ json_features("api_features") {
     sources += [ "_crypto_dot_com_features.json" ]
   }
 
-  if (brave_together_enabled) {
+  if (brave_talk_enabled) {
     sources += [ "_brave_together_api_features.json" ]
   }
 }
@@ -105,7 +105,7 @@ if (crypto_dot_com_enabled) {
   brave_extensions_api_schema_sources += [ "crypto_dot_com.json" ]
 }
 
-if (brave_together_enabled) {
+if (brave_talk_enabled) {
   brave_extensions_api_schema_sources += [ "brave_together.json" ]
 }
 

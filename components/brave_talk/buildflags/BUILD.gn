@@ -5,6 +5,6 @@ import("//brave/components/brave_talk/buildflags/buildflags.gni")
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
-    "BRAVE_TOGETHER_ENABLED=$brave_together_enabled",
+    "BRAVE_TALK_ENABLED=$brave_talk_enabled",
   ]
 }

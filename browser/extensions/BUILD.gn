@@ -193,7 +193,7 @@ source_set("extensions") {
     ]
   }
 
-  if (brave_together_enabled) {
+  if (brave_talk_enabled) {
     sources += [
       "api/brave_talk_api.cc",
       "api/brave_talk_api.h",
