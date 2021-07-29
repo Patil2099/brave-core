@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace brave_together {
+namespace brave_talk {
 
 // Brave Talk is supported for all :)
 const std::vector<std::string> unsupported_regions = {
