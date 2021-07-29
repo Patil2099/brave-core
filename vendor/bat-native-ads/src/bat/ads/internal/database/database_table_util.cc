@@ -70,7 +70,7 @@ std::string BuildInsertQuery(const std::string& from,
   const std::string comma_separated_to_columns =
       base::JoinString(to_columns, ", ");
 
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s",
+  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s %s;",
                             to.c_str(), comma_separated_to_columns.c_str(),
                             comma_separated_from_columns.c_str(), from.c_str(),
                             group_by.c_str());
