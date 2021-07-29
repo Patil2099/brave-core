@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/environment.h"
-#include "brave/components/brave_together/browser/regions.h"
+#include "brave/components/brave_talk/browser/regions.h"
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
 
