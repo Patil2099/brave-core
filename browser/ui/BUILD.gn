@@ -552,12 +552,20 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "brave_browser_browsertest.cc" ]
+    sources = [
+      "brave_browser_browsertest.cc",
+      "views/crash_report_permission_ask_dialog_browsertest.cc",
+    ]
 
     deps = [
       "//brave/browser/ui",
+      "//chrome/browser",
+      "//chrome/browser:browser_process",
       "//chrome/browser/ui",
+      "//chrome/test:browser_tests",
       "//chrome/test:test_support_ui",
+      "//components/metrics",
+      "//components/prefs",
       "//content/test:test_support",
     ]
   }

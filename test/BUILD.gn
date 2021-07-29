@@ -151,7 +151,7 @@ test("brave_unit_tests") {
     "//brave/browser/content_settings:unit_tests",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/first_run:unit_tests",
-    "//brave/browser/metrics/test:brave_metrics_unit_tests",
+    "//brave/browser/metrics:brave_metrics_unit_tests",
     "//brave/browser/net",
     "//brave/browser/new_tab:unittest",
     "//brave/browser/permissions:unit_tests",
@@ -539,6 +539,7 @@ group("brave_browser_tests_deps") {
 
   # force these to build for tests
   deps = [
+    ":test_support",
     "//brave",
     "//brave:browser_dependencies",
     "//brave:child_dependencies",

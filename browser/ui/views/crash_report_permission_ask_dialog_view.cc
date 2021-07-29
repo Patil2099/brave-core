@@ -44,6 +44,8 @@ void ShowCrashReportPermissionAskDialog(Browser* browser) {
 namespace {
 
 void ScheduleSessionCrashedBubble() {
+  // It's ok to use lastly used browser because there will be only one when
+  // this launched after un-cleaned exit.
   if (auto* browser = BrowserList::GetInstance()->GetLastActive())
     SessionCrashedBubble::ShowIfNotOffTheRecordProfile(browser);
 }
