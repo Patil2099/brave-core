@@ -26,6 +26,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/content_paths.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -123,12 +124,17 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithNetworkCookies(
     scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner,
     base::WeakPtr<HttpRequestMonitor> http_request_monitor,
     const base::FilePath& server_root,
+    const base::FilePath& content_server_root,
     const HttpRequest& request) {
   main_thread_task_runner->PostTask(
       FROM_HERE, base::BindOnce(&HttpRequestMonitor::OnHttpRequest,
                                 http_request_monitor, request));
   auto http_response =
       net::test_server::HandleFileRequest(server_root, request);
+  if (!http_response) {
+    http_response =
+        net::test_server::HandleFileRequest(content_server_root, request);
+  }
   if (http_response) {
     GURL request_url = request.GetURL();
     if (request_url.has_query()) {
@@ -175,12 +181,15 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
 
   void SetUpHttpsServer() {
     base::FilePath test_data_dir;
+    base::FilePath content_test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::PathService::Get(content::DIR_TEST_DATA, &content_test_data_dir);
 
     https_server_.RegisterDefaultHandler(
         base::BindRepeating(&HandleFileRequestWithNetworkCookies,
                             base::SequencedTaskRunnerHandle::Get(),
-                            http_request_monitor_.AsWeakPtr(), test_data_dir));
+                            http_request_monitor_.AsWeakPtr(), test_data_dir,
+                            content_test_data_dir));
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
@@ -250,11 +259,11 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   }
 
   void CreateBroadcastChannel(RenderFrameHost* frame) {
-    EXPECT_TRUE(
-        content::ExecJs(frame,
-                        "self.bc = new BroadcastChannel('channel');"
-                        "self.bc_message = '';"
-                        "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
+    EXPECT_TRUE(content::ExecJs(
+        frame,
+        "self.bc = new BroadcastChannel('channel');"
+        "self.bc_message = '';"
+        "self.bc.onmessage = (m) => { self.bc_message = m.data; };"));
   }
 
   void SendBroadcastMessage(RenderFrameHost* frame, base::StringPiece message) {
@@ -828,21 +837,13 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       {// Send from 3p b.com frame.
        .send = frames[site_a_tab1][1],
        // Expect received in 3p b.com frames inside a.com.
-       .expect_received =
-           {
-               frames[site_a_tab1][2],
-               frames[site_a_tab1][4],
-               frames[site_a_tab2][1],
-               frames[site_a_tab2][2],
-               frames[site_a_tab2][4],
-           }},
+       .expect_received = {frames[site_a_tab1][2], frames[site_a_tab1][4],
+                           frames[site_a_tab2][1], frames[site_a_tab2][2],
+                           frames[site_a_tab2][4]}},
       {// Send from 3p a.com frame.
        .send = frames[site_b_tab1][3],
        // Expect received in 3p a.com frame inside b.com.
-       .expect_received =
-           {
-               frames[site_b_tab2][3],
-           }},
+       .expect_received = {frames[site_b_tab2][3]}},
       {// Send from b.com main frame.
        .send = frames[site_b_tab1][0],
        // Expect received in both b.com tabs and nested 1p b.com frames.
@@ -882,6 +883,18 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
       }
     }
   }
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, EphemeralServiceWorker) {
+  GURL a_site_ephemeral_storage_worker_url_ =
+      https_server_.GetURL("a.com", "/ephemeral_storage_worker.html");
+
+  // Create tabs.
+  WebContents* site_a_tab1 =
+      LoadURLInNewTab(a_site_ephemeral_storage_worker_url_);
+  EXPECT_EQ("ok", content::EvalJs(
+                      content::ChildFrameAt(site_a_tab1->GetMainFrame(), 0),
+                      "setup();"));
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest,
