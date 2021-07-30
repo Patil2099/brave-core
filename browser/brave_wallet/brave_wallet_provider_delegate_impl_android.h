@@ -25,7 +25,8 @@ class BraveWalletProviderDelegateImplAndroid
       const BraveWalletProviderDelegateImplAndroid&) = delete;
   ~BraveWalletProviderDelegateImplAndroid() override = default;
 
-  void ShowConnectToSiteUI() override;
+  void RequestEthereumPermissions(
+      RequestEthereumPermissionsCallback callback) override;
 };
 
 }  // namespace brave_wallet

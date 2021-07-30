@@ -4,8 +4,6 @@ import("//extensions/buildflags/buildflags.gni")
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
-  check_includes = false
-
   sources = [
     "asset_ratio_controller_factory.cc",
     "asset_ratio_controller_factory.h",
@@ -62,8 +60,11 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_provider_delegate_impl.h",
     ]
     deps += [
-      "//brave/browser/ui",
-      "//chrome/browser/ui",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/common:mojom",
+      "//components/content_settings/core/common",
+      "//components/permissions",
+      "//mojo/public/cpp/bindings",
     ]
   }
 }
